@@ -8,7 +8,8 @@ auto_ptr<Candidate> cloneDecayTree( const Candidate & c ) {
   if ( n == 1 ) return auto_ptr<Candidate>( c.clone() );
   CompositeCandidate * cmp( new CompositeCandidate( c ) );
   auto_ptr<Candidate> cmpPtr( cmp );
-  for( size_t i = 0; i < n; ++ i )
-    cmp->addDaughter( cloneDecayTree( * c.daughter( i ) ) );
+  for( size_t i = 0; i < n; ++ i ) {
+    cmp->addDaughter( * cloneDecayTree( * c.daughter( i ) ).release() );
+  }
   return cmpPtr;
 }
