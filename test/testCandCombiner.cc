@@ -1,4 +1,4 @@
-// $Id: testCandCombiner.cc,v 1.5 2006/02/28 11:20:22 llista Exp $
+// $Id: testCandCombiner.cc,v 1.1 2007/06/17 15:49:21 llista Exp $
 #include <cppunit/extensions/HelperMacros.h>
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
 #include "PhysicsTools/CandUtils/interface/CandCombiner.h"
@@ -41,10 +41,10 @@ void testCandCombiner::checkAll() {
   auto_ptr<Candidate> c2( new LeafCandidate( -1, math::XYZTLorentzVector( 0, 1, 0, 1 ) ) );
   c.push_back( c1 );
   c.push_back( c2 );
-  CandCombiner<AnySelector<Candidate> > combiner1( +1, -1 );
+  CandCombiner<AnySelector> combiner1( +1, -1 );
   auto_ptr<CandidateCollection> cc1 = combiner1.combine( cands );
   CPPUNIT_ASSERT( cc1->size() == 1 );
-  CandCombiner<AnySelector<Candidate> > combiner2;
+  CandCombiner<AnySelector> combiner2;
   auto_ptr<CandidateCollection> cc2 = combiner2.combine( cands );
   CPPUNIT_ASSERT( cc2->size() == 1 );
   auto_ptr<Candidate> c3( new LeafCandidate( +1, math::XYZTLorentzVector( 0, 0, 1, 1 ) ) );
