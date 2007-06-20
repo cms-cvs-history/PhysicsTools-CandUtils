@@ -9,6 +9,7 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/Common/interface/AssociationMap.h"
 #include "DataFormats/Common/interface/OneToOne.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleCandidate.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 
 template<typename C>
@@ -63,7 +64,7 @@ const reco::Candidate * FastCandMatcher<C>::operator()( const reco::Candidate & 
       for( size_t i = 0; i < mothers; ++ i ) {
 	const reco::Candidate * mom = dauMatch->mother( i );
 	if ( mom != 0 && mom->pdgId() == dauMatch->pdgId() && 
-	     mom->status() == 3 && dauMatch->status() == 1 ) {
+	     reco::status( * mom ) == 3 && reco::status( * dauMatch ) == 1 ) {
 	  // assume a single mother at this point...
 	  mom = mom->mother( 0 );
 	}
