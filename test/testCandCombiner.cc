@@ -1,9 +1,8 @@
-// $Id: testCandCombiner.cc,v 1.3 2007/07/23 10:04:14 llista Exp $
+// $Id: testCandCombiner.cc,v 1.2 2007/06/18 18:33:47 llista Exp $
 #include <cppunit/extensions/HelperMacros.h>
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
 #include "PhysicsTools/CandUtils/interface/CandCombiner.h"
 #include "PhysicsTools/Utilities/interface/AnySelector.h"
-#include "DataFormats/Common/test/TestHandle.h"
 #include <iostream>
 using namespace reco;
 
@@ -17,13 +16,26 @@ public:
   void checkAll(); 
 };
 
+namespace testcandcombiner {
+  template<class T>
+  struct TestHandle {
+    TestHandle(const edm::ProductID& iId, const T* iProd) : id_(iId), prod_(iProd) {}
+    const edm::ProductID& id() const { return id_;}
+    const T* product() const { return prod_;}
+  private:
+    edm::ProductID id_;
+    const T* prod_;
+  };
+}
+
 CPPUNIT_TEST_SUITE_REGISTRATION(testCandCombiner);
 
 void testCandCombiner::checkAll() {
+  using namespace testcandcombiner;
   using namespace std;
   using namespace edm;
   CandidateCollection c;
-  edm::TestHandle<CandidateCollection> hd(&c, ProductID(1));
+  TestHandle<CandidateCollection> hd(ProductID(1), &c);
   CandidateRefProd cands( hd );
   auto_ptr<Candidate> c1( new LeafCandidate( +1, math::XYZTLorentzVector( 1, 0, 0, 1 ) ) );
   auto_ptr<Candidate> c2( new LeafCandidate( -1, math::XYZTLorentzVector( 0, 1, 0, 1 ) ) );
